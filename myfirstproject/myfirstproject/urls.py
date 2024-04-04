@@ -18,6 +18,7 @@ from app import views as v
 from django.contrib import admin
 from django.urls import path, include
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("app.urls")),
@@ -25,5 +26,7 @@ urlpatterns = [
     path('iniciar_jornada/', v.iniciar_jornada, name='iniciar_jornada'),
     path('finalitzar_jornada/', v.finalitzar_jornada, name='finalitzar_jornada'),
     path('veure_registres/', v.veure_registres, name='veure_registres'),
+    path('exportar/json/', v.exportar_jornades_json, name='exportar_jornades_json'),
+    path('exportar/csv/', v.exportar_jornades_csv, name='exportar_jornades_csv'),
 ]
 
