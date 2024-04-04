@@ -1,0 +1,31 @@
+<table width="100%">
+    <tr>
+        <!-- Contingut Principal -->
+        <td>
+            {% if jornada_en_curs %}
+            <p style="background-color: lightgreen; padding: 10px;">La teva jornada està INICIADA.</p>
+            <form action="{% url 'finalitzar_jornada' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Finalitzar Jornada</button>
+            </form>
+        {% else %}
+            <p style="background-color: lightcoral; padding: 10px;">La teva jornada està PARADA.</p>
+            <form action="{% url 'iniciar_jornada' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Iniciar Jornada</button>
+            </form>
+        {% endif %}
+        
+        
+        </td>
+
+        <!-- Informació de l'Usuari -->
+        <td align="right">
+            {% if user.is_authenticated %}
+                <p>Benvingut, {{ user.username }}! <a href="{% url 'salir' %}">Tancar sessió</a></p>
+            {% else %}
+                <a href="{% url 'login' %}">Iniciar sessió</a>
+            {% endif %}
+        </td>
+    </tr>
+</table>

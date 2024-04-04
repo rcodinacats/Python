@@ -1,0 +1,17 @@
+<form action="{% url 'iniciar_jornada' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Iniciar Jornada</button>
+</form>
+
+<form action="{% url 'finalitzar_jornada' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Finalitzar Jornada</button>
+</form>
+
+  <a href="{% url 'salir' %}">Cerrar sessión</a>
+  
+{% if jornada_en_curs %}
+    <p>La teva jornada està INICIADA.</p>
+{% else %}
+    <p>La teva jornada està PARADA.</p>
+{% endif %}
