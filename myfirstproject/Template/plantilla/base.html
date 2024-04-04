@@ -1,17 +1,43 @@
-<form action="{% url 'iniciar_jornada' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Iniciar Jornada</button>
-</form>
 
-<form action="{% url 'finalitzar_jornada' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Finalitzar Jornada</button>
-</form>
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}El Meu Projecte{% endblock %}</title>
+    <!-- Aquí pots incloure altres enllaços com a CSS, JS, etc. -->
+</head>
 
-  <a href="{% url 'salir' %}">Cerrar sessión</a>
-  
-{% if jornada_en_curs %}
-    <p>La teva jornada està INICIADA.</p>
-{% else %}
-    <p>La teva jornada està PARADA.</p>
-{% endif %}
+<body>
+    <header>
+        <td align="right">
+            {% if user.is_authenticated %}
+                <p>Benvingut, {{ user.username }}! <a href="{% url 'salir' %}">Tancar sessió</a></p>
+            {% else %}
+                <a href="{% url 'login' %}">Iniciar sessió</a>
+            {% endif %}
+        </td>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Contingut específic de cada pàgina -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        {% if user.is_authenticated %}
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Inici</a></li>
+                    <li><a href="{% url 'veure_registres' %}">Registres</a></li>
+                    <li><a href="{% url 'salir' %}">Tancar Sessió</a></li>
+                    <li><a href="{% url 'exportar_jornades_csv' %}">Exportar CSV</a></li>
+                    <li><a href="{% url 'exportar_jornades_json' %}">Exportar JSON</a></li>
+                    <!-- Afegir més enllaços segons necessari -->
+                </ul>
+            </nav>
+        {% endif %}
+    </footer>
+</body>
+</html>

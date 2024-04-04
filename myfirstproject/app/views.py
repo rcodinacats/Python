@@ -7,17 +7,20 @@ from django.utils import timezone
 from django.http import JsonResponse
 from django.core.serializers import serialize
 import csv
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views import generic
 
 @login_required
 def home(request):
+    registres = Jornada.objects.filter(usuari=request.user).order_by('-data_hora_inici')
+    jornada_en_curs = registres.first() and not registres.first().data_hora_fi
+    return render(request, 'plantilla/veure_registres.html', {'registres': registres, 'jornada_en_curs': jornada_en_curs})
     return render(request, 'plantilla/base.html')
 
 def salir(request):
     logout(request)
     return redirect('/')
-
-
-
 
 def iniciar_jornada(request):
     if request.user.is_authenticated:
@@ -50,8 +53,11 @@ def veure_registres(request):
 def exportar_jornades_json(request):
     jornades = Jornada.objects.all()
     jornades_json = serialize('json', jornades)
-    return JsonResponse(jornades_json, safe=False)
-
+    
+    response = HttpResponse(jornades_json, content_type='application/json')
+    response['Content-Disposition'] = 'attachment; filename="jornades.json"'
+    
+    return response
 @login_required
 def exportar_jornades_csv(request):
     response = HttpResponse(content_type='text/csv')
@@ -64,3 +70,8 @@ def exportar_jornades_csv(request):
         escriptor.writerow([jornada.usuari.username, jornada.data_hora_inici, jornada.data_hora_fi])
 
     return response
+
+class SignUpView(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')  # Redirigir a la pàgina d'inici de sessió després del registre
+    template_name = 'registration/signup.html'

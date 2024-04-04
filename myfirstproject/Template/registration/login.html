@@ -1,23 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Iniciar session</title>
-</head>
+{% extends 'plantilla/base.html' %}
 
-<body>
-    <p>Inicio de sessión requerido</p>
+{% block title %}Iniciar Sessió{% endblock %}
+
+{% block content %}
+    <p>Inicio de sessió requerido</p>
     <form method="post">
         {% csrf_token %}
         <label for="usuario">
             usuario
-            <input type="text" name="username">
+            <input type="text" name="username" id="usuario">
         </label>
         <label for="pass">
             contraseña
-            <input type="password" name="password">
+            <input type="password" name="password" id="pass">
         </label>
-        <button type="submit">Iniciar session</button>
+        <button type="submit">Iniciar sessió</button>
+        
     </form>
-</body>
-</html>
+    <a href="{% url 'signup' %}">Registrar-se</a>
+{% endblock %}
